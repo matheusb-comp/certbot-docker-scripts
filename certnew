@@ -83,7 +83,7 @@ fi
 cd $(dirname "$0")
 DATA_PATH=${DATA_PATH:-"$(pwd)/cert-data"}
 CONF_CERTBOT="${DATA_PATH}/letsencrypt"
-# TODO: Go back
+cd - > /dev/null 2>&1
 
 # Check if at least a domain was provided
 if [ -z "${DOMAINS:+unsetornull}" ]; then

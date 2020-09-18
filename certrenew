@@ -43,7 +43,7 @@ eval set -- "$O"
 while true; do
   case "$1" in
   -p|--path) DATA_PATH="$2"; shift 2;;
-  -w|--webroot) WEBROOT="${2:-acme-webroot}"; shift 2;;
+  -w|--webroot) WEBROOT="$2"; shift 2;;
   -f|--force) FORCE="--force-renewal"; shift;;
   -s|--staging) STAGING="--staging"; shift;;
   -t|--testing) TESTING="--dry-run"; shift;;
@@ -64,7 +64,7 @@ fi
 cd $(dirname "$0")
 DATA_PATH=${DATA_PATH:-"$(pwd)/cert-data"}
 CONF_CERTBOT="${DATA_PATH}/letsencrypt"
-# TODO: Go back
+cd - > /dev/null 2>&1
 
 # Setup the Certbot plugin (webroot or standalone)
 if [ -z "$PLUGIN" ]; then
@@ -92,7 +92,6 @@ fi
 
 # Execute the certbot webroot renewal
 echo "## Renewing Let's Encrypt certificates"
-set -x
 docker run --rm $PORT $WEBROOT_VOLUME \
   -v "${CONF_CERTBOT}:/etc/letsencrypt" \
   --entrypoint "certbot" \
